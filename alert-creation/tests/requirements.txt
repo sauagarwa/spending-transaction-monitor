@@ -1,0 +1,16 @@
+# Test requirements for alert-creation system
+
+# Core testing framework
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.0.0
+pytest-mock>=3.10.0
+
+# FastAPI testing
+httpx>=0.24.0
+fastapi[all]>=0.100.0
+
+# Additional testing utilities
+responses>=0.23.0
+freezegun>=1.2.0
+factory-boy>=3.2.0

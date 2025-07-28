@@ -1,0 +1,15 @@
+pandas 
+openai
+streamlit
+fastapi
+uvicorn[standard]
+langchain
+langgraph
+langchain_community
+langchain_openai
+jsonschema
+httpx
+python-dotenv
+sentence_transformers
+psycopg2-binary
+cryptography

@@ -18,38 +18,38 @@ datasource db {
 model User {
   id                String   @id @default(cuid())
   email             String   @unique
-  firstName         String
-  lastName          String
-  phoneNumber       String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  isActive          Boolean  @default(true)
+  first_name         String
+  last_name          String
+  phone_number       String?
+  created_at         DateTime @default(now())
+  updated_at         DateTime @updatedAt
+  is_active          Boolean  @default(true)
   
   // Address information
-  addressStreet     String?
-  addressCity       String?
-  addressState      String?
-  addressZipCode    String?
-  addressCountry    String?  @default("US")
+  address_street     String?
+  address_city       String?
+  address_state      String?
+  address_zipcode    String?
+  address_country    String?  @default("US")
   
   // Financial information
-  creditLimit       Decimal? @db.Decimal(12, 2)
-  currentBalance    Decimal? @db.Decimal(12, 2) @default(0.00)
+  credit_limit       Decimal? @db.Decimal(12, 2)
+  credit_balance    Decimal? @db.Decimal(12, 2) @default(0.00)
   
   // Location tracking (with privacy consent)
-  locationConsentGiven      Boolean @default(false)
-  lastAppLocationLatitude   Float?
-  lastAppLocationLongitude  Float?
-  lastAppLocationTimestamp  DateTime?
-  lastAppLocationAccuracy   Float?   // Location accuracy in meters
+  location_consent_given      Boolean @default(false)
+  last_app_location_latitude   Float?
+  last_app_location_longitude  Float?
+  last_app_location_timestamp  DateTime?
+  last_app_location_accuracy   Float?   // Location accuracy in meters
   
   // Last transaction location
-  lastTransactionLatitude   Float?
-  lastTransactionLongitude  Float?
-  lastTransactionTimestamp  DateTime?
-  lastTransactionCity       String?
-  lastTransactionState      String?
-  lastTransactionCountry    String?
+  last_merchant_latitude   Float?
+  last_merchant_longitude  Float?
+  last_transaction_timestamp  DateTime?
+  last_merchant_city       String?
+  last_merchant_state      String?
+  last_merchant_country    String?
   
   // Relationships
   creditCards       CreditCard[]
@@ -58,27 +58,27 @@ model User {
   alertNotifications AlertNotification[]
   
   @@map("users")
-  @@index([addressCity, addressState])
-  @@index([locationConsentGiven])
+  @@index([address_city, address_state])
+  @@index([location_consent_given])
 }
 
 // Credit card information
 model CreditCard {
   id              String   @id @default(cuid())
-  userId          String
-  cardNumber      String   // Last 4 digits only for security
-  cardType        String   // Visa, MasterCard, etc.
-  bankName        String
-  cardHolderName  String
-  expiryMonth     Int
-  expiryYear      Int
-  isActive        Boolean  @default(true)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  user_id          String
+  card_number      String   // Last 4 digits only for security
+  card_type        String   // Visa, MasterCard, etc.
+  bank_name        String
+  card_holder_name  String
+  expiry_month     Int
+  expiry_year      Int
+  is_active        Boolean  @default(true)
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
   
   // Relationships
-  user            User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  transactions    Transaction[]
+  user            User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  //transactions    Transaction[]
   
   @@map("credit_cards")
 }
@@ -86,111 +86,119 @@ model CreditCard {
 // Transaction datastore
 model Transaction {
   id                String      @id @default(cuid())
-  userId            String
-  creditCardId      String
+  trans_num         String
+  user_id            String
+  credit_card_num      String
+
+  // User detail
+  first_name         String
+  last_name          String
   
   // Transaction details
   amount            Decimal     @db.Decimal(10, 2)
   currency          String      @default("USD")
   description       String
-  merchantName      String
-  merchantCategory  String      // MCC code or category
-  transactionDate   DateTime
-  transactionType   TransactionType @default(PURCHASE)
+  merchant_name      String
+  merchant_category  String      // MCC code or category
+  transaction_date   DateTime
+  transaction_type   TransactionType @default(PURCHASE)
   
   // Location information
-  merchantLocation  String?
-  merchantCity      String?
-  merchantState     String?
-  merchantCountry   String?
+  merchant_latitude   Float?
+  merchant_longitude  Float?
+  merchant_city      String?
+  merchant_state     String?
+  merchant_country   String?
+  merchant_zipcode   String?
   
   // Processing information
-  status            TransactionStatus @default(PENDING)
-  authorizationCode String?
-  referenceNumber   String?
+  status            TransactionStatus @default(APPROVED)
+  authorization_code String?
+  reference_number   String?
   
   // Metadata
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  created_at         DateTime @default(now())
+  updated_at         DateTime @updatedAt
   
   // Relationships
-  user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  creditCard        CreditCard @relation(fields: [creditCardId], references: [id], onDelete: Cascade)
+  user              User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  // creditCard        CreditCard @relation(fields: [credit_card_num], references: [id], onDelete: Cascade)
   alertNotifications AlertNotification[]
   
   @@map("transactions")
-  @@index([userId, transactionDate])
-  @@index([merchantCategory])
+  @@index([user_id, transaction_date])
+  @@index([merchant_category])
   @@index([amount])
 }
+
 
 // Alert rules datastore
 model AlertRule {
   id                String      @id @default(cuid())
-  userId            String
+  user_id            String
   
   // Rule details
   name              String
   description       String?
-  isActive          Boolean     @default(true)
-  alertType         AlertType
+  is_active          Boolean     @default(true)
+  alert_type         AlertType
   
   // Condition parameters
-  amountThreshold   Decimal?    @db.Decimal(10, 2)
-  merchantCategory  String?
-  merchantName      String?
+  amount_threshold   Decimal?    @db.Decimal(10, 2)
+  merchant_category  String?
+  merchant_name      String?
   location          String?
   timeframe         String?     // e.g., "daily", "weekly", "monthly"
   
   // Natural language query for AI-driven alerts
-  naturalLanguageQuery String?
+  natural_language_query String?
   
   // Notification preferences
-  notificationMethods NotificationMethod[] @default([EMAIL])
+  notification_methods NotificationMethod[] @default([EMAIL])
   
   // Metadata
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  lastTriggered     DateTime?
-  triggerCount      Int @default(0)
+  created_at         DateTime @default(now())
+  updated_at         DateTime @updatedAt
+  last_triggered     DateTime?
+  trigger_count      Int @default(0)
   
   // Relationships
-  user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User @relation(fields: [user_id], references: [id], onDelete: Cascade)
   alertNotifications AlertNotification[]
   
   @@map("alert_rules")
-  @@index([userId, isActive])
+  @@index([user_id, is_active])
 }
 
 // Alert notifications log
 model AlertNotification {
   id              String      @id @default(cuid())
-  userId          String
-  alertRuleId     String
-  transactionId   String?
+  user_id          String
+  alert_rule_id     String
+  transaction_id   String?
   
   // Notification details
   title           String
   message         String
-  notificationMethod NotificationMethod
+  notification_method NotificationMethod
   status          NotificationStatus @default(PENDING)
   
   // Delivery information
-  sentAt          DateTime?
-  deliveredAt     DateTime?
-  readAt          DateTime?
+  sent_at          DateTime?
+  delivered_at     DateTime?
+  read_at          DateTime?
   
   // Metadata
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
   
   // Relationships
-  user            User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  alertRule       AlertRule @relation(fields: [alertRuleId], references: [id], onDelete: Cascade)
-  transaction     Transaction? @relation(fields: [transactionId], references: [id], onDelete: SetNull)
+  user            User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  alertRule       AlertRule @relation(fields: [alert_rule_id], references: [id], onDelete: Cascade)
+  transaction     Transaction? @relation(fields: [transaction_id], references: [id], onDelete: SetNull)
   
   @@map("alert_notifications")
-  @@index([userId, createdAt])
+  @@index([user_id, created_at])
 }
 
 // Enums

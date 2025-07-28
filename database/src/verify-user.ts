@@ -10,7 +10,7 @@ async function verifyUserData() {
         creditCards: true,
         transactions: {
           take: 3,
-          orderBy: { transactionDate: 'desc' }
+          orderBy: { transaction_date: 'desc' }
         },
         alertRules: true
       }
@@ -22,32 +22,32 @@ async function verifyUserData() {
     }
 
     console.log('👤 USER PROFILE:');
-    console.log(`   Name: ${user.firstName} ${user.lastName}`);
+    console.log(`   Name: ${user.first_name} ${user.last_name}`);
     console.log(`   Email: ${user.email}`);
-    console.log(`   Phone: ${user.phoneNumber}`);
-    console.log(`   Active: ${user.isActive}\n`);
+    console.log(`   Phone: ${user.phone_number}`);
+    console.log(`   Active: ${user.is_active}\n`);
 
     console.log('📍 ADDRESS:');
-    console.log(`   Street: ${user.addressStreet}`);
-    console.log(`   City: ${user.addressCity}, ${user.addressState} ${user.addressZipCode}`);
-    console.log(`   Country: ${user.addressCountry}\n`);
+    console.log(`   Street: ${user.address_street}`);
+    console.log(`   City: ${user.address_city}, ${user.address_state} ${user.address_zipcode}`);
+    console.log(`   Country: ${user.address_country}\n`);
 
     console.log('💰 FINANCIAL INFO:');
-    console.log(`   Credit Limit: $${user.creditLimit?.toString()}`);
-    console.log(`   Current Balance: $${user.currentBalance?.toString()}\n`);
+    console.log(`   Credit Limit: $${user.credit_limit?.toString()}`);
+    console.log(`   Current Balance: $${user.credit_balance?.toString()}\n`);
 
     console.log('📱 MOBILE APP LOCATION (Privacy Consented):');
-    console.log(`   Consent Given: ${user.locationConsentGiven}`);
-    if (user.locationConsentGiven) {
-      console.log(`   Last Location: ${user.lastAppLocationLatitude}, ${user.lastAppLocationLongitude}`);
-      console.log(`   Timestamp: ${user.lastAppLocationTimestamp?.toISOString()}`);
-      console.log(`   Accuracy: ${user.lastAppLocationAccuracy}m\n`);
+    console.log(`   Consent Given: ${user.location_consent_given}`);
+    if (user.location_consent_given) {
+      console.log(`   Last Location: ${user.last_app_location_latitude}, ${user.last_app_location_longitude}`);
+      console.log(`   Timestamp: ${user.last_app_location_timestamp?.toISOString()}`);
+      console.log(`   Accuracy: ${user.last_app_location_accuracy}m\n`);
     }
 
     console.log('🛒 LAST TRANSACTION LOCATION:');
-    console.log(`   Coordinates: ${user.lastTransactionLatitude}, ${user.lastTransactionLongitude}`);
-    console.log(`   Location: ${user.lastTransactionCity}, ${user.lastTransactionState}, ${user.lastTransactionCountry}`);
-    console.log(`   Timestamp: ${user.lastTransactionTimestamp?.toISOString()}\n`);
+    console.log(`   Coordinates: ${user.last_merchant_latitude}, ${user.last_merchant_longitude}`);
+    console.log(`   Location: ${user.last_merchant_city}, ${user.last_merchant_state}, ${user.last_merchant_country}`);
+    console.log(`   Timestamp: ${user.last_transaction_timestamp?.toISOString()}\n`);
 
     console.log('💳 RELATED DATA:');
     console.log(`   Credit Cards: ${user.creditCards.length}`);

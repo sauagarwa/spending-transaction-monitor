@@ -1,0 +1,39 @@
+AlertRule: Alert me if I make more than 5 transactions in the last hour.
+
+AlertRule: Alert me if I spend more than $300 on dining.
+
+AlertRule: Alert me if my dining expense exceeds the average of the last 30 days by more than 40%.
+
+AlertRule: Alert me if my dining expense exceeds my average by more than $20 in the last 30 days.
+
+AlertRule: Alert me if my transaction amount for Apple exceeds my typical electronics spend by 3x.
+
+AlertRule: Alert me if I spend more than $300 in one day.
+
+AlertRule: Alert me if I exceed $500 in spending over a week.
+
+AlertRule: Alert me if the amount of a recurring charge increases by more than 20%.
+
+AlertRule: Alert me if the amount of a recurring charge increases by more than 5 dollars.
+  
+AlertRule: Alert me when a new recurring charge pattern is detected.
+
+AlertRule: Alert me if I’m charged more than once by the same merchant on the same day.
+
+AlertRule: Alert me if a transaction occurs far from my last known location.
+
+AlertRule: Alert me if a transaction happens outside my home state.
+  
+AlertRule: Alert me if a transaction happens outside my home city.
+
+AlertRule: Alert me if a transaction occurs outside my country.
+
+AlertRule: Alert me if this is the first time I’ve made a transaction in this city.
+
+AlertRule: Alert me if I transact with a merchant I’ve never used before.
+
+AlertRule: Alert me if the same merchant charges me more than once on the same day.
+
+AlertRule: Alert me if I’m charged significantly more than usual by the same merchant.
+
+AlertRule: Alert me if I’m charged more than 20 dollars than usual by the same merchant.
